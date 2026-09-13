@@ -280,8 +280,9 @@ def main():
         learning_rate=args.lr,
         bf16=True,                  # bf16 is native on sm_120; fp16 amp unscale isn't implemented for bf16
         logging_steps=1,            # Log every step so the watcher can show live progress
-        save_strategy="epoch",
-        save_total_limit=2,
+        save_strategy="steps",
+        save_steps=500,             # checkpoint every 500 steps so a reboot loses minutes, not a week
+        save_total_limit=3,         # keep a few recent checkpoints, resume-able
         remove_unused_columns=False,
         report_to=args.report_to,   # "wandb" if token present, else "none"
         optim="paged_adamw_8bit",   # memory-efficient optimizer for 8GB
